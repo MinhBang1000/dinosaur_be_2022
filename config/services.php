@@ -30,4 +30,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'github' => [
+        'client_id' => '7bec4e8bc9333de60ab6',
+        'client_secret' => 'fc6a153623686fcfafc8a130b2a9741c261fcbbe',
+        'redirect' => 'http://dinosaur_2022:8000/api/login/github/callback',
+    ],
 ];

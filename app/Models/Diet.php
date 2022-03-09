@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Diet extends Model
 {
     use HasFactory;
+
+    public function dinosaurs(){
+        return $this->hasMany(Dinosaur::class,'diet_id','id');
+    }
 }
