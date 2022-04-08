@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use App\Models\PersonalAccessToken;
 
 class LoginController extends Controller
 {
@@ -27,7 +29,7 @@ class LoginController extends Controller
             return $validated;
         }
 
-        return Socialite::driver($provider)->stateless()->redirect();
+        return Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();
         // call to redirect path in services file in config
         // continue call handleProviderCallback
     }
@@ -73,15 +75,45 @@ class LoginController extends Controller
                 'avatar' => $user->getAvatar()
             ]
         );
+        // Delete old token first
+        PersonalAccessToken::where('tokenable_id','=',$userCreated->id)->delete();
+
+        // Create Token with Permission for each Role 
         $permissions = [];
         foreach ($userCreated->role->permissions as $p){
             $permissions[] = $p->permission_name;
         }
         $token = $userCreated->createToken('dinosaur-database-server-token',$permissions)->plainTextToken;
         $data = [
-            'user_id' => $userCreated->id,
-            'access-token' => $token
+            'userID' => $userCreated->id,
+            'accessToken' => $token
         ];
         return $this->sendResponse($data,'Login Successful');
+    }
+
+    public function loginManually(Request $request){
+        // Validate
+        $data = [
+            'email' => $request->loginUsername,
+            'password' => $request->loginPassword
+        ];
+        if (Auth::attempt($data)){
+            $userCreated = Auth::user();
+            // Delete old token first
+            PersonalAccessToken::where('tokenable_id','=',$userCreated->id)->delete();
+
+            // Create Token with Permission for each Role 
+            $permissions = [];
+            foreach ($userCreated->role->permissions as $p){
+                $permissions[] = $p->permission_name;
+            }
+            $token = $userCreated->createToken('dinosaur-database-server-token',$permissions)->plainTextToken;
+            $data = [
+                'userID' => $userCreated->id,
+                'accessToken' => $token
+            ];
+            return  $this->sendResponse($data,'Login Successful');
+        }
+        return $this->sendError("Can't login. Something went wrong",[],401);
     }
 }

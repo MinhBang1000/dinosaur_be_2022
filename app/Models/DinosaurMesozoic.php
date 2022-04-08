@@ -9,5 +9,8 @@ class DinosaurMesozoic extends Model
 {
     use HasFactory;
 
-    
+    protected $fillable = [
+        'dinosaur_id',
+        'mesozoic_id',
+    ];
 }

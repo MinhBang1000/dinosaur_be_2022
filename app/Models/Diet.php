@@ -9,7 +9,11 @@ class Diet extends Model
 {
     use HasFactory;
 
-    public function dinosaurs(){
+    public function dinosaursAll(){
         return $this->hasMany(Dinosaur::class,'diet_id','id');
+    }
+
+    public function dinosaurs(){
+        return $this->dinosaursAll()->where('decision',1);
     }
 }

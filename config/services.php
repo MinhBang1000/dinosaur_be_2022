@@ -11,7 +11,7 @@ return [
     | as Mailgun, Postmark, AWS and more. This file provides the de facto
     | location for this type of information, allowing packages to have
     | a conventional file to locate the various service credentials.
-    |
+    | http://dinosaur_2022:8000/api/login/github/callback
     */
 
     'mailgun' => [
@@ -33,6 +33,6 @@ return [
     'github' => [
         'client_id' => '7bec4e8bc9333de60ab6',
         'client_secret' => 'fc6a153623686fcfafc8a130b2a9741c261fcbbe',
-        'redirect' => 'http://dinosaur_2022:8000/api/login/github/callback',
+        'redirect' => 'http://localhost:3000/',
     ],
 ];

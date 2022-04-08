@@ -12,7 +12,11 @@ class Category extends Model
 
     protected $fillable = ['id','category_name_en','category_name_vn','category_description_en','category_description_vn'];
 
-    public function dinosaurs(){
+    public function dinosaursAll(){
         return $this->hasMany(Dinosaur::class,'category_id','id');
+    }
+
+    public function dinosaurs(){
+        return $this->dinosaursAll()->where('decision',1);
     }
 }

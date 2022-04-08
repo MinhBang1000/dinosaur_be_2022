@@ -9,4 +9,8 @@ class DinosaurCountry extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'dinosaur_id',
+        'country_id',
+    ];
 }

@@ -50,4 +50,16 @@ class User extends Authenticatable
     public function role(){
         return $this->belongsTo(Role::class,'role_id','id');
     }
+
+    public function posts(){
+        return $this->hasMany(Post::class,'user_id','id');
+    }
+
+    public function comments(){
+        return $this->hasMany(Comment::class,'user_id','id');
+    }
+
+    public function dinosaurs(){
+        return $this->belongsToMany(Dinosaur::class,UserDinosaur::class,'user_id','dinosaur_id');
+    }
 }

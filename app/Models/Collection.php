@@ -9,7 +9,11 @@ class Collection extends Model
 {
     use HasFactory;
 
-    public function dinosaur(){
+    public function dinosaurAll(){
         return $this->belongsTo(Dinosaur::class,'dinosaur_id','id');
+    }
+
+    public function dinosaur(){
+        return $this->dinosaurAll()->where('decision',1);
     }
 }
